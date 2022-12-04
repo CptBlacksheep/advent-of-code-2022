@@ -3,32 +3,19 @@ package com.github.cptblacksheep.adventofcode2022
 import com.github.cptblacksheep.adventofcode2022.Choice.*
 import com.github.cptblacksheep.adventofcode2022.Outcome.*
 
-private val input = InputParser("input-day2.txt")
-    .parseLines()
+private val input = InputParser("input-day2.txt").parseLines()
     .map { it.split(" ") }
 
-private fun solvePartOne() {
-    var score = 0
-    input.forEach {
-        val opponentChoice = Choice.fromInput(it[0])
-        val playerChoice = Choice.fromInput(it[1])
-
-        score += playerChoice.score
-        score += rockPaperScissors(opponentChoice, playerChoice).score
-    }
-    println(score)
+private fun solvePartOne() = input.sumOf {
+    val opponentChoice = Choice.fromInput(it[0])
+    val playerChoice = Choice.fromInput(it[1])
+    playerChoice.score + rockPaperScissors(opponentChoice, playerChoice).score
 }
 
-private fun solvePartTwo() {
-    var score = 0
-    input.forEach {
-        val opponentChoice = Choice.fromInput(it[0])
-        val outcome = Outcome.fromInput(it[1])
-
-        score += outcome.score
-        score += Choice.fromOpponentChoiceAndOutcome(opponentChoice, outcome).score
-    }
-    println(score)
+private fun solvePartTwo() = input.sumOf {
+    val opponentChoice = Choice.fromInput(it[0])
+    val outcome = Outcome.fromInput(it[1])
+    outcome.score + Choice.fromOpponentChoiceAndOutcome(opponentChoice, outcome).score
 }
 
 private fun rockPaperScissors(opponentChoice: Choice, playerChoice: Choice) = when {
@@ -86,6 +73,6 @@ private enum class Outcome(val score: Int) {
 }
 
 private fun main() {
-    solvePartOne()
-    solvePartTwo()
+    println(solvePartOne())
+    println(solvePartTwo())
 }

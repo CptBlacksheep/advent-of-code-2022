@@ -7,23 +7,15 @@ private val input = InputParser("input-day4.txt").parseLines()
         }.toList()
     }
 
-private fun solvePartOne() {
-    println(
-        input.count { sections ->
-            sections[0].all { it in sections[1] } || sections[1].all { it in sections[0] }
-        }
-    )
+private fun solvePartOne() = input.count { sections ->
+    sections[0].all { it in sections[1] } || sections[1].all { it in sections[0] }
 }
 
-private fun solvePartTwo() {
-    println(
-        input.count { sections ->
-            sections[0].any { it in sections[1] } || sections[1].any { it in sections[0] }
-        }
-    )
+private fun solvePartTwo() = input.count { sections ->
+    sections[0].any { it in sections[1] } || sections[1].any { it in sections[0] }
 }
 
 private fun main() {
-    solvePartOne()
-    solvePartTwo()
+    println(solvePartOne())
+    println(solvePartTwo())
 }
