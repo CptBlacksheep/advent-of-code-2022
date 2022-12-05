@@ -5,7 +5,9 @@ class InputParser(resourceName: String) {
     private val res = javaClass.classLoader.getResource(resourceName)!!
 
     fun parseLines(): List<String> {
-        return res.readText().split("\n")
+        return res.readText()
+            .split("\n")
+            .dropLastWhile { it.isEmpty() }
     }
 
     fun parseIntLines(): List<Int> {
@@ -32,5 +34,4 @@ class InputParser(resourceName: String) {
             group.map { it.toInt() }
         }
     }
-
 }
