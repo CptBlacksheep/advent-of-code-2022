@@ -10,9 +10,7 @@ class InputParser(resourceName: String) {
             .dropLastWhile { it.isEmpty() }
     }
 
-    fun parseIntLines(): List<Int> {
-        return parseLines().map { it.toInt() }
-    }
+    fun parseIntLines() = parseLines().map { it.toInt() }
 
     fun parseLinesGrouped(): List<List<String>> {
         return mutableListOf<List<String>>().apply {
@@ -34,4 +32,8 @@ class InputParser(resourceName: String) {
             group.map { it.toInt() }
         }
     }
+
+    fun parseString(lineSeparator: String = "") = parseLines().joinToString(lineSeparator) { it }
+
+    fun parseChars() = parseString().toList()
 }
