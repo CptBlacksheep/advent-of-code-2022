@@ -28,4 +28,10 @@ class InputParser(resourceName: String) {
     fun parseString(lineSeparator: String = "") = parseLines().joinToString(lineSeparator) { it }
 
     fun parseChars() = parseString().toList()
+
+    fun parseIntGrid() = parseLines().map { line ->
+        line.map {
+            it.digitToInt()
+        }
+    }
 }
