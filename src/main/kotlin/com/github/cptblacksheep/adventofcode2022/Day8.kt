@@ -1,5 +1,7 @@
 package com.github.cptblacksheep.adventofcode2022
 
+import com.github.cptblacksheep.adventofcode2022.Direction.*
+
 private val input = InputParser("input-day8.txt").parseIntGrid()
 
 private fun solvePartOne() = input.mapIndexed { y, line ->
@@ -24,60 +26,30 @@ private fun isTreeVisible(x: Int, y: Int) =
                 (y + 1 until input.size).none { input[it][x] >= input[y][x] }
     }
 
-private fun scenicScore(x: Int, y: Int): Int {
-    val viewingDistances = mutableListOf<Int>()
-    val currentTree = input[y][x]
+private fun scenicScore(x: Int, y: Int) =
+    viewingDistance(LEFT, x, y) * viewingDistance(RIGHT, x, y) * viewingDistance(UP, x, y) * viewingDistance(DOWN, x, y)
+
+
+private fun viewingDistance(direction: Direction, x: Int, y: Int): Int {
+    val range = when (direction) {
+        LEFT -> (x - 1 downTo 0)
+        RIGHT -> (x + 1 until input[0].size)
+        UP -> (y - 1 downTo 0)
+        DOWN -> (y + 1 until input.size)
+    }
     var blockingTreeMet = false
-
-    var viewingDistance = (x - 1 downTo 0).takeWhile {
-        val tree = input[y][it]
-        if (blockingTreeMet) {
-            false
-        } else {
-            if (tree >= currentTree) blockingTreeMet = true
-            true
+    return range.takeWhile {
+        val tree = when (direction) {
+            LEFT, RIGHT -> input[y][it]
+            UP, DOWN -> input[it][x]
         }
+        if (blockingTreeMet) return@takeWhile false
+        if (tree >= input[y][x]) blockingTreeMet = true
+        true
     }.count()
-    viewingDistances.add(viewingDistance)
-    blockingTreeMet = false
-
-    viewingDistance = (x + 1 until input[0].size).takeWhile {
-        val tree = input[y][it]
-        if (blockingTreeMet) {
-            false
-        } else {
-            if (tree >= currentTree) blockingTreeMet = true
-            true
-        }
-    }.count()
-    viewingDistances.add(viewingDistance)
-    blockingTreeMet = false
-
-    viewingDistance = (y - 1 downTo 0).takeWhile {
-        val tree = input[it][x]
-        if (blockingTreeMet) {
-            false
-        } else {
-            if (tree >= currentTree) blockingTreeMet = true
-            true
-        }
-    }.count()
-    viewingDistances.add(viewingDistance)
-    blockingTreeMet = false
-
-    viewingDistance = (y + 1 until input.size).takeWhile {
-        val tree = input[it][x]
-        if (blockingTreeMet) {
-            false
-        } else {
-            if (tree >= currentTree) blockingTreeMet = true
-            true
-        }
-    }.count()
-    viewingDistances.add(viewingDistance)
-
-    return viewingDistances.reduce { d1, d2 -> d1 * d2 }
 }
+
+private enum class Direction { LEFT, RIGHT, UP, DOWN }
 
 private fun main() {
     println(solvePartOne())
