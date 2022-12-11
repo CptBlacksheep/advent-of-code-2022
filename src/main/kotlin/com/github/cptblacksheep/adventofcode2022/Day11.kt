@@ -60,7 +60,6 @@ private class Monkey(
         } else {
             (item + (operationValue ?: item)) % lowestCommonMultiple
         }
-
         return if (divideWorryLevels) newWorryLevel / 3L
         else newWorryLevel
     }
