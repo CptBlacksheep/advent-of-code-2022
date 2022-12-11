@@ -8,10 +8,10 @@ private fun solvePartTwo() = solve(10_000, false)
 
 private fun solve(rounds: Int, divideWorryLevels: Boolean): Long {
     val monkeys = createMonkeys()
-    val lowestCommonMultiple = monkeys.map { it.testValue }.reduce { v1, v2 -> v1 * v2 }
+    val testValueLowestCommonMultiple = monkeys.map { it.testValue }.reduce { v1, v2 -> v1 * v2 }
     repeat(rounds) {
         monkeys.forEach { monkey ->
-            monkey.doRound(monkeys, divideWorryLevels, lowestCommonMultiple)
+            monkey.doRound(monkeys, divideWorryLevels, testValueLowestCommonMultiple)
         }
     }
     val inspections = monkeys.map { it.inspections }.sortedDescending()
@@ -46,19 +46,19 @@ private class Monkey(
     val items = items.toMutableList()
     var inspections = 0L
 
-    fun doRound(monkeys: List<Monkey>, divideWorryLevels: Boolean, lowestCommonMultiple: Long) {
+    fun doRound(monkeys: List<Monkey>, divideWorryLevels: Boolean, testValueLowestCommonMultiple: Long) {
         items.forEach { itemWorryLevel ->
             inspections++
-            throwItem(monkeys, calculateWorryLevel(itemWorryLevel, divideWorryLevels, lowestCommonMultiple))
+            throwItem(monkeys, calculateWorryLevel(itemWorryLevel, divideWorryLevels, testValueLowestCommonMultiple))
         }
         items.clear()
     }
 
-    private fun calculateWorryLevel(item: Long, divideWorryLevels: Boolean, lowestCommonMultiple: Long): Long {
+    private fun calculateWorryLevel(item: Long, divideWorryLevels: Boolean, testValueLowestCommonMultiple: Long): Long {
         val newWorryLevel = if (operator == "*") {
-            (item * (operationValue ?: item)) % lowestCommonMultiple
+            (item * (operationValue ?: item)) % testValueLowestCommonMultiple
         } else {
-            (item + (operationValue ?: item)) % lowestCommonMultiple
+            (item + (operationValue ?: item)) % testValueLowestCommonMultiple
         }
         return if (divideWorryLevels) newWorryLevel / 3L
         else newWorryLevel
