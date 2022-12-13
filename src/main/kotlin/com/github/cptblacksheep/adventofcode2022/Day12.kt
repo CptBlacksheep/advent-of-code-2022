@@ -1,7 +1,5 @@
 package com.github.cptblacksheep.adventofcode2022
 
-import java.util.*
-
 private val input = InputParser("input-day12.txt").parseLines()
 
 private val startCoordinate = input.flatMapIndexed { y, line ->
