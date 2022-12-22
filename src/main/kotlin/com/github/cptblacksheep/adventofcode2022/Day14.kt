@@ -47,11 +47,13 @@ private fun solve(partTwo: Boolean = false): Int {
 private fun addSand(existingSand: MutableSet<Pair<Int, Int>>, hasFloor: Boolean): Boolean {
     var currentPos = Pair(500, 0)
     while (true) {
-        val newPos = moveSand(existingSand, currentPos)
-        if (newPos == currentPos) break
-        currentPos = newPos
-        if (!hasFloor && currentPos.second == lowestRockY) return false
-        if (hasFloor && currentPos.second == floorY - 1) break
+        val oldPos = currentPos
+        currentPos = moveSand(existingSand, currentPos)
+        when {
+            currentPos == oldPos -> break
+            !hasFloor && currentPos.second == lowestRockY -> return false
+            hasFloor && currentPos.second == floorY - 1 -> break
+        }
     }
     existingSand.add(currentPos)
     if (hasFloor && currentPos == Pair(500, 0)) return false
